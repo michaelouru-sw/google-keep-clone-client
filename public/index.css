@@ -1,0 +1,38 @@
+body {
+  margin: 0%;
+}
+.header {
+  background-color: #fbbc05;
+  margin: 0%;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  padding: 0.5%;
+}
+
+.account {
+  float: right;
+  padding-right: 10px;
+}
+
+button {
+  /* background-color: #fbbc05; */
+  color: white;
+}
+
+.bulb {
+  color: #fff;
+  rotate: 180deg;
+}
+
+.footer {
+  color: rgb(177, 176, 176);
+  text-align: center;
+}
+.createInputField {
+  width: 100%;
+}
+.createContainer {
+  padding-left: 30%;
+  padding-right: 30%;
+  padding-top: 10px;
+  text-align: right;
+}
