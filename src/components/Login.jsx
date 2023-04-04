@@ -64,25 +64,6 @@ export default function Login() {
           window.location.href = "/home";
         }
       });
-    // const response = await fetch("http://127.0.0.1:3000/api/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     username: user.username,
-    //     password: user.password,
-    //   }),
-    // });
-    // if (response.status === 200) {
-    //   console.log(await response.json());
-    //   const { token, user } = response.json();
-    //   localStorage.setItem("token", token);
-    //   localStorage.setItem("user", user);
-    //   // window.location.href = "/home";
-    // } else {
-    //   alert(response.statusText);
-    // }
   };
 
   return (
