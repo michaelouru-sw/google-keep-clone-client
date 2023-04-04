@@ -1,5 +1,4 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -7,18 +6,12 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-  >
-    •
-  </Box>
-);
-
 export default function Note(props) {
+  function deleteNote(event) {
+    props.deleteNote(props.id);
+  }
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card sx={{ minWidth: 275 }} className="note">
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           Note {props.index}
@@ -29,7 +22,7 @@ export default function Note(props) {
         <Typography variant="body2">{props.body}</Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">
+        <Button size="small" onClick={deleteNote}>
           <DeleteOutlineIcon />
         </Button>
       </CardActions>

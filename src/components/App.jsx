@@ -1,12 +1,9 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import Login from "./Login";
 import Index from "./Index";
 import Register from "./Register";
-import { Navigate } from "react-router-dom";
-import { jwt } from "jsonwebtoken";
-import PrivateRoute from "./PrivateRoute";
 
 export default function App() {
   return (

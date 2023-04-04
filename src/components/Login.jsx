@@ -17,24 +17,6 @@ import { styled } from "@mui/system";
 import Header from "./Header";
 import Footer from "./Footer";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="#">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText("#fbbc05"),
   backgroundColor: "#fbbc05",
@@ -50,6 +32,7 @@ export default function Login() {
     username: "",
     password: "",
   });
+  const [userAuthenticated, setUserAuthenticated] = useState(false);
   const handleChange = (event) => {
     setUser((prevValue) => {
       return {
@@ -62,7 +45,7 @@ export default function Login() {
     event.preventDefault();
 
     console.log(user);
-    const response = await fetch("http://127.0.0.1:3000/api/login", {
+    fetch("http://127.0.0.1:3000/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -71,21 +54,40 @@ export default function Login() {
         username: user.username,
         password: user.password,
       }),
-    });
-    console.log(response);
-    if (response.status === 200) {
-      const { token, user } = response.json();
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-      window.location.href = "/home";
-    } else {
-      alert(response.statusText);
-    }
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          localStorage.setItem("user", JSON.stringify(user));
+          setUserAuthenticated(true);
+          localStorage.setItem("userAuthenticated", userAuthenticated);
+          window.location.href = "/home";
+        }
+      });
+    // const response = await fetch("http://127.0.0.1:3000/api/login", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     username: user.username,
+    //     password: user.password,
+    //   }),
+    // });
+    // if (response.status === 200) {
+    //   console.log(await response.json());
+    //   const { token, user } = response.json();
+    //   localStorage.setItem("token", token);
+    //   localStorage.setItem("user", user);
+    //   // window.location.href = "/home";
+    // } else {
+    //   alert(response.statusText);
+    // }
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Header />
+      <Header userAuthenticated={userAuthenticated} />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

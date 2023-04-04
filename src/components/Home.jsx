@@ -3,35 +3,63 @@ import Note from "./Note";
 import Header from "./Header";
 import Footer from "./Footer";
 import CreateArea from "./Createarea";
-import { TextField } from "@mui/material";
 import { useEffect } from "react";
 import { useState } from "react";
 
-export default function Home() {
+export default function Home(props) {
   const [notes, setNotes] = useState([]);
+  const userAuthenticated = localStorage.getItem("userAuthenticated");
+  const storedUser = JSON.parse(localStorage.getItem("user"));
 
-  // Get logged user
-  //   const user = JSON.parse(localStorage.getItem("user"));
-  //   const username = user.email;
+  useEffect(() => {
+    fetch("http://localhost:3000/api/notes/" + storedUser.username)
+      .then((response) => response.json())
+      .then((receivedNotes) => {
+        setNotes(receivedNotes.notes);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
-  //   useEffect(
-  //     fetch("http://localhost:3000/app/notes", {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         email: username,
-  //       }),
-  //     })
-  //   );
+  function reloadPage() {
+    window.location.reload();
+  }
 
-  return (
+  async function deleteNote(id) {
+    await fetch("http://localhost:3000/api/note/" + id, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          console.log("There was an error deleting the note");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        reloadPage();
+      })
+      .catch((error) => console.log(error));
+  }
+
+  return userAuthenticated ? (
     <div>
-      <Header />
+      <Header userAuthenticated={userAuthenticated} />
       <CreateArea />
-      <Note />
+      {notes.map((note, index) => {
+        return (
+          <Note
+            title={note.title}
+            body={note.body}
+            id={note._id}
+            key={note._id}
+            index={index + 1}
+            deleteNote={deleteNote}
+          />
+        );
+      })}
+
       <Footer />
     </div>
+  ) : (
+    (window.location.href = "/login")
   );
 }

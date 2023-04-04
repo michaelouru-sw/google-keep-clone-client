@@ -1,63 +1,52 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { TextField } from "@mui/material";
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 
 export default function CreateArea() {
   const [newNote, setNote] = useState({
+    email: "",
     title: "",
     body: "",
   });
   const [onFocused, setOnFocused] = useState(false);
 
   function handleChange(event) {
+    const user = JSON.parse(localStorage.getItem("user"));
+
     const { name, value } = event.target;
     setNote((prevNote) => {
       return {
         ...prevNote,
+        email: user.username,
         [name]: value,
       };
     });
   }
   async function submitNote(event) {
     event.preventDefault();
-    const { title, body } = newNote;
-    const response = await fetch("http://localhost:3000/api/newnote", {
+    const email = newNote.email;
+    const title = newNote.title;
+    const body = newNote.body;
+    await fetch("http://127.0.0.1:3000/api/newnote", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title: title, body: body }),
-    });
-    if (response.statusCode === 200) {
-      window.location.reload();
-    } else {
-      console.log(response);
-    }
-    console.log(title, body);
+      body: JSON.stringify({ email: email, title: title, body: body }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        window.location.reload();
+        console.log(data);
+      });
   }
+
   function handleFocused() {
     setOnFocused(true);
   }
-  function handleBlur() {
-    setOnFocused(false);
-  }
-
-  // function submitNote() {
-  //   useEffect(
-  //     fetch("http://localhost:3000/api/newnote", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(newNote),
-  //     })
-  //   );
-  //   console.log(newNote);
-  // }
 
   return (
     <div className="createContainer">

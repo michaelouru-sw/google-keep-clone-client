@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -16,24 +14,6 @@ import { useState } from "react";
 import { styled } from "@mui/system";
 import Header from "./Header";
 import Footer from "./Footer";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Michael Ouru
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText("#fbbc05"),
@@ -63,7 +43,6 @@ export default function Register() {
   }
   async function handleSubmit(event) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
     console.log(user);
     const response = await fetch("http://127.0.0.1:3000/api/register", {
       method: "POST",
@@ -94,7 +73,7 @@ export default function Register() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Header />
+      <Header userAuthenticated={false} />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
